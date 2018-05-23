@@ -1,0 +1,22 @@
+library(igraph)
+################################################
+par(mfrow = c(1,2))
+# sample = read_graph("E:\\Graph\\src data\\vnet\\vnet.graphml", "graphml")
+sample = erdos.renyi.game(200, p=0.5, type = "gnp")
+plot(sample)
+d = degree(sample)
+n = length(d)
+selected_vertices = sample(n, n/2)
+induced = induced_subgraph(sample, selected_vertices, impl = "create_from_scratch")
+plot(induced)
+################################################
+g = read_graph("E:\\Graph\\src data\\vnet\\vnet.graphml", "graphml")
+line_graph = make_line_graph(g)
+#plot(line_graph)
+################################################
+d_g = degree(g)
+n_g = length(d_g)
+num_of_vertices = sample(n_g, 1)
+selected_vertices = sample(n_g, num_of_vertices)
+sampled_induced = induced_subgraph(line_graph, selected_vertices, impl="create_from_scratch")
+sampled_line_graph = make_line_graph(sampled_induced)
