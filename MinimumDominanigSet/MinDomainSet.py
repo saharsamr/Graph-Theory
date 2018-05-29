@@ -7,8 +7,8 @@ NUM_OF_UNCOVERED_VERTICES = 0
 CHECK_STATUS = 1
 
 class MinDomainSet:
-    def __init__ (self, filePath):
-        self.graph = igraph.read(filePath)
+    def __init__ (self, graph):
+        self.graph = graph
         self.vertices_status = {}
         self.__initial_status__(self.graph.degree())
         self.min_domain_set = []
@@ -59,8 +59,21 @@ class MinDomainSet:
                 result.append(key)
         return result
 
+def make_queen_chess_cover_graph ():
+    graph = igraph.Graph(12*12)
+    for i in range(12):
+        for j in range(12):
+            graph.add_edges([(i*12+j, k*12+j) for k in range(i+1, 12)])
+            graph.add_edges([(i*12+j, i*12+k) for k in range(j+1, 12)])
+            min_ = min(i, 12-j-1)
+            max_ = max(i, j)
+            graph.add_edges([(i*12+j, (i+i1)*12+(j+i1)) for i1 in range(1, 12-max_)])
+            graph.add_edges([(i*12+j, (i-i1)*12+(j-i1)) for i1 in range(1, min_)])
 
+    print graph.degree()
+    return graph
 
 if __name__ == "__main__":
-    g = MinDomainSet("./../data/got.graphml")
-    print (g.solve_greedy())
+    graph = make_queen_chess_cover_graph()
+    dominating_set = MinDomainSet(graph).solve_greedy()
+    print dominating_set
