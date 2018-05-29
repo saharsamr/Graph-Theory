@@ -69,8 +69,6 @@ def make_queen_chess_cover_graph ():
             max_ = max(i, j)
             graph.add_edges([(i*12+j, (i+i1)*12+(j+i1)) for i1 in range(1, 12-max_)])
             graph.add_edges([(i*12+j, (i-i1)*12+(j-i1)) for i1 in range(1, min_)])
-
-    print graph.degree()
     return graph
 
 if __name__ == "__main__":
